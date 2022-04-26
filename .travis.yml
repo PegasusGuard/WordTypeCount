@@ -1,41 +1,40 @@
-dist: trusty
-language: java
-jdk:
-  - openjdk11
-env:
-  - SCRIPT=bin/unit-tests.sh
+language: android
+jdk: jbr-11
 
-  - SCRIPT=bin/run-journey-test-from-ci.sh
-
-# http://docs.travis-ci.com/user/migrating-from-legacy
-sudo: false
-
-addons:
-  apt:
-    packages:
-      - tree
+android:
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+  components:
+    - tools
+    - build-tools-30.0.2
+    - android-30
+    - android-22
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-22
 
 before_install:
-  - rvm install 2.2.5
-  - rvm use 2.2.5
-  - bin/build-jq.sh  # we want jq 1.5 features; not avail through pkg repo.
-
-# https://docs.travis-ci.com/user/customizing-the-build#Skipping-the-Installation-Step
-install: true  # if we don't skip install, ./gradlew assemble is invoked, but this task is not available.
+  - chmod +x gradlew
 
 before_script:
-  - export PATH=$TRAVIS_BUILD_DIR/bin:$PATH  # ensure our tools are prefered over included ones.
+  - echo no | android create avd --force -n test -t android-22 --   abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 script:
-  - $SCRIPT
+  - ./gradlew clean build
+  - ./gradlew test
+  - ./gradlew build check
 
-# configure caching (https://docs.travis-ci.com/user/languages/java/#Caching)
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-# format from https://docs.travis-ci.com/user/caching/#Enabling-multiple-caching-features
 cache:
-  bundler: true
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
