@@ -2,7 +2,7 @@ import java.io.File
 
 fun main() {
 
-    val adver = "[а-я]*[нкр][о][ ]".toRegex()
+    val adverb = "[а-я]*[нкр][о][ ]".toRegex()
     val adjective = "[а-я]*[аиюы][й][ ]".toRegex()
     val verb = "[а-я]*[ть][ ]".toRegex()
 
