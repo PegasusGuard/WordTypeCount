@@ -1,5 +1,5 @@
 language: android
-jdk: jbr-11
+jdk: oraclejdk11
 
 android:
   licenses:
