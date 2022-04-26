@@ -4,7 +4,7 @@ fun main() {
 
     val adverb = "[а-я]*[нкр][о][ ]".toRegex()
     val adjective = "[а-я]*[аиюы][й][ ]".toRegex()
-    val ver = "[а-я]*[ть][ ]".toRegex()
+    val verb = "[а-я]*[ть][ ]".toRegex()
 
     val contents = readFileAsTextUsingInputStream("/Users/areduss/Projects/Reader/text.txt")
 
