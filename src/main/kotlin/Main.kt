@@ -1,9 +1,11 @@
 import java.io.File
 
 fun main() {
-
+    //regular expression for adverbs
     val adverb = "[а-я]*[нкр][о][ ]".toRegex()
+    //regular expression for adjectives
     val adjective = "[а-я]*[аиюы][й][ ]".toRegex()
+    // regular expression for verbs
     val verb = "[а-я]*[ть][ ]".toRegex()
 
     val contents = readFileAsTextUsingInputStream("/Users/areduss/Projects/Reader/text.txt")
